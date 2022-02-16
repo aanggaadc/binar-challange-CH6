@@ -16,7 +16,7 @@ UserGameBiodata.init({
   address: DataTypes.STRING(255),
   city: DataTypes.STRING(255),
   hobby: DataTypes.STRING(255),
-  date_of_birth: DataTypes.DATE,
+  date_of_birth: DataTypes.DATEONLY,
   user_game_uuid: {
       type: DataTypes.UUID,
       allowNull: false
