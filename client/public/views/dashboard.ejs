@@ -22,7 +22,7 @@
                             <a href="/dashboard" class="nav-link align-middle px-0">
                                 <img src="Assets/icon/user.png" alt="" style="width: 25px;"> <span class="ms-1 d-none d-sm-inline">User Dashboard</span>
                             </a>
-                        </li>
+                        </li>                       
                         <li class="nav-item">
                             <a href="/dashboard/biodata" class="nav-link align-middle px-0">
                                 <img src="Assets/icon/profile.png" alt="" style="width: 28px;"><span class="ms-1 d-none d-sm-inline">User Biodata</span>
@@ -45,6 +45,12 @@
             <div class="col py-3" style="margin-top: 100px;">
                 <div class="container-fluid">
                     <h1 class="text-center" style="color: rgb(211, 211, 211);">USER DASHBOARD</h1>
+                    <% if (status) { %>
+                      <div class="alert alert-warning alert-dismissible show fade text-center" role="alert">
+                        <strong> <%= message %>  </strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                  <% }%>              
                     <a href="/dashboard/new">
                         <button class="btn btn-primary mb-2 mt-2">Add New User</button>
                       </a>
@@ -100,6 +106,8 @@
                       </tbody>
         </div>
     </div>
-    
+    <script src="/Assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/Assets/js/jquery-3.6.0.min.js"></script>
+    <script src="/Assets/js/alert.js"></script>
 </body>
 </html>

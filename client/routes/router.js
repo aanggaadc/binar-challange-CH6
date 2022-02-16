@@ -10,7 +10,7 @@ const axios = require('axios')
 //LANDING PAGE
 router.get('/', (req, res, next) => {
     try {
-        const token = req.cookies.jwt
+    const token = req.cookies.jwt
     const status = req.query.status
 
     jwt.verify(token, 'secret', (err, decodedToken) => {
@@ -237,26 +237,54 @@ router.post('/logout', (req, res, next) => {
 })
 
 
-// ---------------------------------------------------------------------------------- //
+// -------------------------------------------------------------------------------------------------------------------- //
 
 // DASHBOARD
 router.get('/dashboard', isLoggedIn, async (req, res, next) => {
     try {
     const token = req.cookies.jwt
+    const status = req.query.status
     const response = await axios.get('http://localhost:3000/api/usergame')
 
     jwt.verify(token, 'secret', (err, decodedToken) => {
         res.locals.user = decodedToken
     })
-    res.render('dashboard',{
-        pageTitle: "Game Dashboard",
-        token,
-        data: response.data.data
-    })
+   
+    if(!status){
+        res.render('dashboard',{
+            pageTitle: "Game Dashboard",
+            token,
+            status,
+            data: response.data.data
+        })
+    }else if(status=="createsuccsess"){
+        res.render('dashboard',{
+            pageTitle: "Game Dashboard",
+            token,
+            status,
+            data: response.data.data,
+            message: "Data Created Succsessfully"
+        })
+    }else if(status=="editsuccsess"){
+        res.render('dashboard',{
+            pageTitle: "Game Dashboard",
+            token,
+            status,
+            data: response.data.data,
+            message: "Data Edited Succsessfully"
+        })
+    }else if(status=="deletesuccsess"){
+        res.render('dashboard',{
+            pageTitle: "Game Dashboard",
+            token,
+            status,
+            data: response.data.data,
+            message: "Data Deleted Succsessfully"
+        })
+    }
     } catch (error) {
         next(error)
-    }
-    
+    }    
 })
 
 router.get('/dashboard/biodata', isLoggedIn, async (req, res, next) => {
@@ -297,7 +325,6 @@ router.get('/dashboard/history', isLoggedIn, async (req, res, next) => {
     
 })
 
-//CRUD
 router.get('/dashboard/new', isLoggedIn, async (req, res, next) => {
     try {
         res.render('dashboard-add',{
@@ -348,7 +375,7 @@ router.post('/dashboard/edit',isLoggedIn, async (req,res, next) => {
 
     try {
         const response = await axios.put(`http://localhost:3000/api/usergame/${id}`, dataToEdit)
-        res.redirect('/dashboard')
+        res.redirect('/dashboard?status=editsuccsess')
       } catch (error) {
         res.redirect(`/dashboard/edit?id=${id}`)
       }
@@ -373,7 +400,7 @@ router.post('/dashboard/new', isLoggedIn, async (req, res, next) => {
 
     const response = await axios.post('http://localhost:3000/api/usergame', newUserGame)
     if (response.status === 201) {
-        res.redirect('/dashboard')
+        res.redirect('/dashboard?status=createsuccsess')
       } else {
         res.redirect("/add")
       }  
@@ -387,7 +414,7 @@ router.post('/dashboard/delete', async (req, res, next) => {
     try {
     const {id} = req.query
     const response = await axios.delete(`http://localhost:3000/api/usergame?id=${id}`)
-    res.redirect('/dashboard')
+    res.redirect('/dashboard?status=deletesuccsess')
     } catch (error) {
         next(error)
     }    
